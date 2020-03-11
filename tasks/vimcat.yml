@@ -1,0 +1,27 @@
+---
+
+- name: Vimcat deps -- pandoc
+  apt:
+    name: pandoc
+    update_cache: true
+  become: true
+
+- name: Vimcat deps -- doctoc
+  npm:
+    name: doctoc
+    global: true
+  become: true
+
+- name: Clone vimcat repo
+  git:
+    repo: https://github.com/rkitover/vimpager
+    dest: "{{ ansible_user_dir }}/zz_packages/build/vimpager"
+
+- name: Build vimcat
+  make:
+    chdir: "{{ ansible_user_dir }}/zz_packages/build/vimpager"
+    target: install-deb
+  become: true
+
+...
+
