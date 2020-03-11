@@ -1,0 +1,12 @@
+
+# ----- Start -- additions from setup
+
+export EDITOR="vim"
+export VISUAL="vim"
+
+# Can we do better?
+which fdd > /dev/null && alias fd='fdd'
+which fnn > /dev/null && alias fn='fnn'
+
+# ----- End   -- additions from setup
+

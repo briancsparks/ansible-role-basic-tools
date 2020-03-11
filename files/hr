@@ -1,0 +1,30 @@
+#!/bin/bash -e
+
+
+DEFAULT="-"
+
+__hr() {
+  local COLS="$(tput cols)"
+  local WORD="$1"
+  local LINE=''
+
+  if [[ -n "$WORD" ]]; then
+    while (( ${#LINE} < COLS )); do
+      LINE="${LINE}${WORD}"
+    done
+
+    echo "${LINE:0:${COLS}}"
+  fi
+}
+
+__hrs() {
+  local WORD
+
+  for WORD in "${@:-${DEFAULT}}"; do
+    __hr "$WORD"
+  done
+}
+
+# Execute __hrs if user is invoking us, But if we are being sourced, do not output
+[ "$0" == "${BASH_SOURCE[0]}" ] && __hrs "$@"
+

@@ -1,0 +1,29 @@
+#!/bin/bash -e
+
+# Do we have a dir to search?
+DIR="."
+if [[ "$#" > 1 ]]; then
+  DIR="$1"
+  shift
+fi
+
+# Flag for how much to search
+HOW_MUCH="--smart"
+if [[ "$#" > 1 ]]; then
+  HOW_MUCH="$1"
+  shift
+fi
+
+
+# By default, skip generated or delivered content
+if [[ $HOW_MUCH == "--smart" ]]; then
+  find $DIR -type f | egrep -v node_module | egrep -v '.git/' | egrep --color=auto -i "$@"
+  exit "$?"
+
+elif [[ $HOW_MUCH == "--all" ]]; then
+  find $DIR -type f | egrep --color=auto -i "$@"
+  exit "$?"
+
+fi
+
+

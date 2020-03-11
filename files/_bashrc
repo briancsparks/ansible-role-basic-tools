@@ -1,0 +1,8 @@
+
+# ----- Start -- additions from setup
+
+[ -f .functions ]     && . .functions
+[ -f .bash_aliases ]  && . .bash_aliases
+
+# ----- End   -- additions from setup
+

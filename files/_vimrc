@@ -1,0 +1,226 @@
+execute pathogen#infect()
+
+"
+"
+" Use: ':so %' to reload this .vimrc file
+"
+"
+
+:let mapleader = ","
+
+:set nocompatible
+:set hidden
+:set encoding=utf-8
+:set showcmd
+:set nu
+:syntax on
+:set ruler
+:set clipboard=unnamed
+
+"" Suggested by Ctrl+Space v5 -- NO WAY
+":set showtabline=0
+
+":set autoread
+highlight StatusLine ctermfg=blue ctermbg=yellow
+
+filetype plugin indent on
+
+" Show error whitespace
+highlight ErrorWhitespace ctermbg=red guibg=red
+match ErrorWhitespace /\s\+$/
+autocmd BufWinEnter * match ErrorWhitespace /\s\+$/
+autocmd InsertEnter * match ErrorWhitespace /\s\+\%#\@<!$/
+autocmd InsertLeave * match ErrorWhitespace /\s\+$/
+autocmd BufWinLeave * call clearmatches()
+autocmd ColorScheme * highlight ErrorWhitespace ctermbg=red guibg=red
+
+":set background=dark
+"let g:solarized_termcolors=256
+"colorscheme solarized
+
+" Whitespace
+:set nowrap
+:set tabstop=2
+:set shiftwidth=2
+:set expandtab
+:set smartindent
+:set backspace=indent,eol,start
+
+" Searching
+:set hlsearch
+:set incsearch
+:set ignorecase
+:set smartcase
+
+:set noswapfile
+
+:set path=./**
+
+"
+" --------------- key mappings ----------------
+"
+
+" Next / Previous tab
+:map <F7> :tabp<CR>:filetype detect<CR>
+:map <F8> :tabn<CR>:filetype detect<CR>
+
+" Open new tab
+:map <C-t> <esc>:tabe<CR>,t
+
+:nnoremap <F5> :filetype detect<CR>
+
+" Switch to syntastic style Next and previous error (quickfix)
+:map <C-n> :cn<CR>
+:map <C-p> :cp<CR>
+
+"" Next and previous error (Syntastic Location List)
+":map <C-n> :lnext<CR>
+":map <C-p> :lprevious<CR>
+
+" Open file from the same dir
+:map <Leader>e :e <C-R>=expand("%:p:h") . '/'<CR>
+
+" Clear search
+nmap <silent> ,. :nohlsearch<CR>
+
+:color desert
+" :color delek
+
+
+" Support for ag
+let g:ag_prg="/usr/bin/ag --vimgrep"
+
+" To search from project root
+"let g:ag_working_path_mode="r"
+
+" Support for ack
+let g:ackprg="/usr/local/bin/ack -H --nocolor --column"
+
+
+"
+" ------------------------------------- vim-javascript  --------------------------------------------------
+"
+let g:javascript_plugin_jsdoc = 1
+let g:javascript_plugin_flow = 1
+
+"
+" ------------------------------------- vim-jsx  --------------------------------------------------
+"
+let g:jsx_ext_required = 0 " Allow JSX in normal JS files
+
+"
+" ------------------------------------- Syntastic  --------------------------------------------------
+"
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+
+" Marks in the left gutter
+let g:syntastic_enable_signs = 1
+let g:syntastic_auto_jump = 3
+
+let g:syntastic_mode_map = { 'mode' : 'active',
+                           \ 'active_filetypes' : ['cpp'],
+                           \ 'passive_filetypes' : ['java', 'objc', 'yaml'] }
+
+let g:syntastic_html_tidy_ignore_errors=[" proprietary attribute " ,"trimming empty <", "unescaped &" , "lacks \"action", "is not recognized!", "discarding unexpected"]
+"let g:syntastic_javascript_checkers=['eslint', 'jshint']
+let g:syntastic_javascript_checkers=['eslint']
+
+" C++
+let g:syntastic_cpp_compiler = 'clang++'
+let g:syntastic_cpp_compiler_options = ' -std=c++14 -stdlib=libc++'
+
+:map <Leader>m :lnext<CR>
+:map <Leader>n :lprevious<CR>
+
+"
+" :Errors
+" :lopen, :lclose
+" :lnext, :lprevious
+"
+
+" ------------------------------------- rails.vim  --------------------------------------------------
+"
+" Set up some useful Rails.vim bindings for working with Backbone.js
+autocmd User Rails Rnavcommand template    app/assets/templates                 -glob=**/*  -suffix=.jst.ejs
+autocmd User Rails Rnavcommand jmodel      app/assets/javascripts/models        -glob=**/*  -suffix=.js
+autocmd User Rails Rnavcommand jview       app/assets/javascripts/views         -glob=**/*  -suffix=.js
+autocmd User Rails Rnavcommand jcollection app/assets/javascripts/collections   -glob=**/*  -suffix=.js
+autocmd User Rails Rnavcommand jrouter     app/assets/javascripts/routers       -glob=**/*  -suffix=.js
+autocmd User Rails Rnavcommand jspec       spec/javascripts                     -glob=**/*  -suffix=.js
+
+"
+" ------------------------------------- vim-ctrlspace  --------------------------------------------------
+"
+
+"" These are previous
+"hi CtrlSpaceSelected term=reverse ctermfg=187  ctermbg=23  cterm=bold
+"hi CtrlSpaceNormal   term=NONE    ctermfg=244  ctermbg=232 cterm=NONE
+"hi CtrlSpaceSearch   ctermfg=220  ctermbg=NONE cterm=bold
+"hi CtrlSpaceStatus   ctermfg=230  ctermbg=234  cterm=NONE
+
+" These are new
+hi link CtrlSpaceNormal   PMenu
+hi link CtrlSpaceSelected PMenuSel
+"hi link CtrlSpaceSearch   Search
+hi link CtrlSpaceStatus   StatusLine
+
+" Or, this one might be needed. See: https://github.com/vim-ctrlspace/vim-ctrlspace
+hi link CtrlSpaceSearch IncSearch
+
+let g:ctrlspace_load_last_workspace_on_start=1
+let g:ctrlspace_save_workspace_on_exit=1
+
+let g:ctrlspace_glob_command = 'git ls-files -o --exclude-standard -c "" | egrep -v "^archive/loki"'
+let g:ctrlspace_max_files=0
+let g:ctrlspace_max_search_results=0
+
+" vim-ctrlspace v5
+let g:CtrlSpaceSaveWorkspaceOnSwitch = 1
+let g:CtrlSpaceSaveWorkspaceOnExit = 1
+
+let g:CtrlSpaceDefaultMappingKey = "<C-space> "
+
+let g:CtrlSpaceSearchTiming = 500
+
+if executable("ag")
+  let g:CtrlSpaceGlobCommand = 'ag -l --nocolor -g ""'
+endif
+
+"
+" ------------------------------------- // to search while in visual mode -------------------------------
+"
+vnoremap // y/<C-R>"<CR>
+
+"
+" ------------------------------------- C++ -------------------------------
+"
+" https://stackoverflow.com/questions/2627886/how-do-i-run-a-c-program-from-vim
+"
+:let $CXXFLAGS='-std=c++11'
+nnoremap <silent> <F10> :!clear;make %< && ./%<<CR>
+
+
+" Do not have to use :set paste ever again!
+if &term =~ "xterm.*"
+    let &t_ti = &t_ti . "\e[?2004h"
+    let &t_te = "\e[?2004l" . &t_te
+    function! XTermPasteBegin(ret)
+        set pastetoggle=<Esc>[201~
+        set paste
+        return a:ret
+    endfunction
+    map <expr> <Esc>[200~ XTermPasteBegin("i")
+    imap <expr> <Esc>[200~ XTermPasteBegin("")
+    vmap <expr> <Esc>[200~ XTermPasteBegin("c")
+    cmap <Esc>[200~ <nop>
+    cmap <Esc>[201~ <nop>
+endif
+
+

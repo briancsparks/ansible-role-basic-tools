@@ -1,0 +1,34 @@
+alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+alias cls='printf "\ec"'
+alias egrep='egrep --color=auto'
+alias fgrep='fgrep --color=auto'
+alias grep='grep --color=auto'
+alias h='history'
+alias hi='history | egrep -i '
+alias l='ls -CF'
+alias la='ls -A'
+alias ll='ls -alF'
+alias ls='ls --color=auto'
+alias scpix='scp -o "StrictHostKeyChecking no" -o UserKnownHostsFile=/dev/null -o ConnectTimeout=1 -o LogLevel=quiet $@'
+alias sshix='ssh -o "StrictHostKeyChecking no" -o UserKnownHostsFile=/dev/null -o ConnectTimeout=1 -o LogLevel=quiet $@'
+alias tree='tree -I '\''node_modules|bower_components|ppds|_tmp|cmake-build|doxygen-build'\'''
+alias treesm='tree -I '\''node_modules|bower_components|ppds|_tmp|cmake-build|doxygen-build|build'\'''
+alias vim='vim -p'
+
+alias showpath='echo $PATH | tr ":" "\n"'
+alias showenv='env | sort'
+
+alias fd='find . -type d | egrep -i '
+alias fn='find . -type f | egrep -i '
+
+# Development
+alias gru='git remote update'
+alias gpff='git pull --ff-only'
+alias fixed='git commit -am "Fixed"'
+alias refactoring='git commit -am "Refactoring"'
+alias wip='git commit -am "WIP"'
+alias k='kubectl'
+
+
+# vim: ft=bash:
+

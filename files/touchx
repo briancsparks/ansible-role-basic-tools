@@ -1,0 +1,13 @@
+#!/bin/bash -e
+
+path="$(dirname "$(readlink -f "$0")")"
+
+mkdir -p $path
+
+if [[ ! -f "$@" ]]; then
+  echo "#!/bin/bash -e" >> "$@"
+  echo "" >> "$@"
+fi
+
+touch "$@" && chmod +x "$@"
+

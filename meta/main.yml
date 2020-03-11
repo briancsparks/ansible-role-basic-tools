@@ -1,0 +1,25 @@
+---
+
+galaxy_info:
+  author: Brian C Sparks
+  description: Install the most very basics.
+  company: Self
+
+  license: license (MIT)
+
+  min_ansible_version: 2.9
+
+  platforms:
+  - name: Ubuntu
+    versions:
+    - xenial
+
+  galaxy_tags:
+  - basic
+  - vim8
+
+dependencies:
+  - geerlingguy.nodejs
+
+...
+

@@ -1,0 +1,125 @@
+---
+# tasks file for basic-tools
+
+
+# ansible_user_dir
+# ansible_user_id
+# ansible_user_shell
+
+- name: Install Packages
+  package:
+    name:
+      - tree
+      - git
+  become: true
+
+- name: Ensure dirs
+  file:
+    path: "{{ item }}"
+    state: directory
+  with_items:
+    - "{{ the_user_dir }}/bin"
+
+- name: Install ~/bin tools
+  copy:
+    src: "{{ item }}"
+    dest: "{{ the_user_dir }}/bin"
+    mode: 0755
+  with_items:
+    - fdd
+    - fnn
+    - gits-status
+    - gprgp
+    - hr
+    - jcat
+    - jlint
+    - json-switch-quotes
+    - keys
+    - npmls
+    - npmls-g
+    - touchx
+
+- name: Install ~/.dot helpers
+  copy:
+    src: _{{ item }}
+    dest: "{{ the_user_dir }}/.{{ item }}"
+  with_items:
+    - ackrc
+    - agignore
+    - bash_aliases
+    - functions
+
+- name: Install ~/.dot ex
+  copy:
+    src: _{{ item }}
+    dest: "{{ the_user_dir }}/._{{ item }}"
+  with_items:
+    - bashrc
+    - profile
+
+
+- name: Add our bashrc to the end of .bashrc
+  blockinfile:
+    path: "{{ the_user_dir }}/.bashrc"
+    marker: "# {mark} ANSIBLE MANAGED BLOCK"
+    block: |
+      if [ -f ~/._bashrc ]; then
+        . ~/._bashrc
+      fi
+
+- name: Add our profile to the end of .profile
+  blockinfile:
+    path: "{{ the_user_dir }}/.profile"
+    marker: "# {mark} ANSIBLE MANAGED BLOCK"
+    block: |
+      if [ -f ~/._profile ]; then
+        . ~/._profile
+      fi
+
+- name: Include vim tasks
+  include_tasks: vim.yml
+
+    #- name: Print some debug information
+    #  vars:
+    #    msg: |
+    #        Module Variables ("vars"):
+    #        --------------------------------
+    #        {{ vars | to_nice_json }}
+    #
+    #        Environment Variables ("environment"):
+    #        --------------------------------
+    #        {{ environment | to_nice_json }}
+    #
+    #        GROUP NAMES Variables ("group_names"):
+    #        --------------------------------
+    #        {{ group_names | to_nice_json }}
+    #
+    #        GROUPS Variables ("groups"):
+    #        --------------------------------
+    #        {{ groups | to_nice_json }}
+    #
+    #        HOST Variables ("hostvars"):
+    #        --------------------------------
+    #        {{ hostvars | to_nice_json }}
+    #
+    #  debug:
+    #    msg: "{{ msg.split('\n') }}"
+    #  tags: debug_info
+
+    #- debug:
+    #    var: vars
+    #
+    #- debug:
+    #    var: environment
+    #
+    #- debug:
+    #    var: group_names
+    #
+    #- debug:
+    #    var: groups
+    #
+    #- debug:
+    #    var: hostvars
+
+...
+

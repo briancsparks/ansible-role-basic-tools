@@ -1,0 +1,5 @@
+#!/bin/bash -e
+
+find . -type f | egrep -v node_modules | egrep '.js$'   | xargs -I % eslint % --format codeframe
+find . -type f | egrep -v node_modules | egrep -v '.eslintrc.json$' | egrep '.json$' | xargs -I % eslint % --format codeframe
+
