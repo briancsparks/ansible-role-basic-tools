@@ -21,6 +21,7 @@
 - name: Setup vim
   args:
     executable: /bin/bash
+    creates:    "{{ the_user_dir }}/.vim/bundle/vim-graphql/autoload/graphql.vim"
   shell: |
     set -x
     echo Installing vim

@@ -16,12 +16,6 @@
 .AppleDouble
 .LSOverride
 
-# Icon must end with two \r
-Icon
-
-# Thumbnails
-._*
-
 # Files that might appear in the root of a volume
 .DocumentRevisions-V100
 .fseventsd
@@ -116,12 +110,12 @@ mono_crash.*
 [Dd]ebugPublic/
 [Rr]elease/
 [Rr]eleases/
-x64/
-x86/
-[Aa][Rr][Mm]/
-[Aa][Rr][Mm]64/
-bld/
-[Bb]in/
+#x64/
+#x86/
+#[Aa][Rr][Mm]/
+#[Aa][Rr][Mm]64/
+#bld/
+#[Bb]in/
 [Oo]bj/
 [Ll]og/
 

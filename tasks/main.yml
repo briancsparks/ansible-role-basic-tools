@@ -13,7 +13,7 @@
       - git
   become: true
 
-- name: Ensure dirs
+- name: Ensure dirs like ~/bin exist
   file:
     path: "{{ item }}"
     state: directory
@@ -22,26 +22,13 @@
 
 - name: Install ~/bin tools
   copy:
-    src: "{{ item }}"
+    src: bin/
     dest: "{{ the_user_dir }}/bin"
     mode: 0755
-  with_items:
-    - fdd
-    - fnn
-    - gits-status
-    - gprgp
-    - hr
-    - jcat
-    - jlint
-    - json-switch-quotes
-    - keys
-    - npmls
-    - npmls-g
-    - touchx
 
 - name: Install ~/.dot helpers
   copy:
-    src: _{{ item }}
+    src: home/_{{ item }}
     dest: "{{ the_user_dir }}/.{{ item }}"
   with_items:
     - ackrc
@@ -51,7 +38,7 @@
 
 - name: Install ~/.dot ex
   copy:
-    src: _{{ item }}
+    src: homeex/_{{ item }}
     dest: "{{ the_user_dir }}/._{{ item }}"
   with_items:
     - bashrc
