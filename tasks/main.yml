@@ -7,7 +7,9 @@
 # ansible_user_shell
 
 - name: Install Packages
-  package:
+  apt:
+    update_cache: true
+    state: present
     name:
       - tree
       - git
