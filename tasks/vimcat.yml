@@ -20,26 +20,6 @@
     path: /usr/bin/vimcat
   register: vimcat_binary
 
-
-- debug:
-    msg: "vimcat_binary isn't defined (path doesn't exist)"
-  when: vimcat_binary.stat.islnk is not defined
-
-- debug:
-    msg: "vimcat_binary is defined (path must exist)"
-  when: vimcat_binary.stat.islnk is defined
-
-- debug:
-    msg: "Path exists and is a symlink"
-  when: vimcat_binary.stat.islnk is defined and vimcat_binary.stat.islnk
-
-- debug:
-    msg: "Path exists and isn't a symlink"
-  when: vimcat_binary.stat.islnk is defined and vimcat_binary.stat.islnk == False
-
-- debug:
-    var: vimcat_binary
-
 - name: Make/Install vimcat
   block:
 
