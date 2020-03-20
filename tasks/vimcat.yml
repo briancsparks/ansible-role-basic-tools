@@ -38,7 +38,7 @@
   when: vimcat_binary.stat.islnk is defined and vimcat_binary.stat.islnk == False
 
 - debug:
-  var: vimcat_binary
+    var: vimcat_binary
 
 - name: Make/Install vimcat
   block:
