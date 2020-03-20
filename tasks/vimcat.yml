@@ -54,7 +54,7 @@
         target: install-deb
       become: true
 
-  when: vimcat_binary.stat.executable is defined and vimcat_binary.stat.executable == False
+  when: vimcat_binary.stat.executable is not defined or vimcat_binary.stat.executable == False
 
 ...
 
