@@ -41,8 +41,6 @@
 
     test -f {{ the_user_dir }}/.vim/autoload/pathogen.vim || curl -SLso {{ the_user_dir }}/.vim/autoload/pathogen.vim https://raw.github.com/tpope/vim-pathogen/master/autoload/pathogen.vim
 
-
-
     #pathogen vim-ctrlspace vim-ctrlspace
     pathogen scrooloose syntastic
     pathogen mxw vim-jsx

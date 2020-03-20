@@ -2,7 +2,9 @@
 
 - name: Vimcat deps -- pandoc
   apt:
-    name: pandoc
+    name:
+      - pandoc
+      - build-essential
     update_cache: true
   become: true
 
@@ -12,21 +14,27 @@
     global: true
   become: true
 
-- name: Clone vimcat repo
-  git:
-    repo: https://github.com/rkitover/vimpager
-    dest: "{{ ansible_user_dir }}/zz_packages/build/vimpager"
 
-- name: Build tools
-  apt:
-    name: build-essential
-  become: true
+# Do we have the vimcat binary?
+- stat:
+    path: /usr/bin/vimcat
+  register: vimcat_binary
 
-- name: Build vimcat
-  make:
-    chdir: "{{ ansible_user_dir }}/zz_packages/build/vimpager"
-    target: install-deb
-  become: true
+- name: Make/Install vimcat
+  block:
+
+    - name: Clone vimcat repo
+      git:
+        repo: https://github.com/rkitover/vimpager
+        dest: "{{ ansible_user_dir }}/zz_packages/build/vimpager"
+
+    - name: Build vimcat
+      make:
+        chdir: "{{ ansible_user_dir }}/zz_packages/build/vimpager"
+        target: install-deb
+      become: true
+
+  when: vimcat_binary.stat.executable == False
 
 ...
 
