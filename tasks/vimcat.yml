@@ -17,6 +17,11 @@
     repo: https://github.com/rkitover/vimpager
     dest: "{{ ansible_user_dir }}/zz_packages/build/vimpager"
 
+- name: Build tools
+  apt:
+    name: build-essential
+  become: true
+
 - name: Build vimcat
   make:
     chdir: "{{ ansible_user_dir }}/zz_packages/build/vimpager"
