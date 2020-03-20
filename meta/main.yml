@@ -18,5 +18,10 @@ galaxy_info:
   - basic
   - vim8
 
+
+dependencies:
+  - geerlingguy.nodejs
+
+
 ...
 
