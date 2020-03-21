@@ -4,39 +4,39 @@
 # TODO: use a block, and a test that this has already been done -- dont do it again (See vimcat.yml)
 
 - git_config:
-  name: push.default
-  value: simple
-  scope: global
+    name: push.default
+    value: simple
+    scope: global
 
 - git_config:
-  name:  color.diff
-  value: auto
-  scope: global
+    name:  color.diff
+    value: auto
+    scope: global
 
 - git_config:
-  name:  color.diff.meta
-  value: blue bold
-  scope: global
+    name:  color.diff.meta
+    value: blue bold
+    scope: global
 
 - git_config:
-  name:  color.diff.frag
-  value: magenta bold
-  scope: global
+    name:  color.diff.frag
+    value: magenta bold
+    scope: global
 
 - git_config:
-  name:  color.diff.old
-  value: red bold
-  scope: global
+    name:  color.diff.old
+    value: red bold
+    scope: global
 
 - git_config:
-  name:  color.diff.new
-  value: green bold
-  scope: global
+    name:  color.diff.new
+    value: green bold
+    scope: global
 
 - git_config:
-  name:  alias.l
-  value: log --branches --tags --graph --oneline --decorate --notes HEAD
-  scope: global
+    name:  alias.l
+    value: log --branches --tags --graph --oneline --decorate --notes HEAD
+    scope: global
 
 ...
 
