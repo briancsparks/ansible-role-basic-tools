@@ -4,3 +4,8 @@
 # gitignore.io
 gi() { curl -sL "https://www.gitignore.io/api/$@" ; }
 
+mkdircd() {
+  mkdir -p $@;
+  cd $@;
+}
+

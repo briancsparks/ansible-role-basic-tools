@@ -71,6 +71,9 @@
 - name: Include vimcat tasks
   include_tasks: vimcat.yml
 
+- name: Include git config
+  include_tasks: git.yml
+
     #- name: Print some debug information
     #  vars:
     #    msg: |
