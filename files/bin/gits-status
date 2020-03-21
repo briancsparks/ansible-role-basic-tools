@@ -1,7 +1,14 @@
 #!/bin/bash -e
 
+# -------------------------------------------------------------------------------------------------
+# die "message"
+#
 die() { echo $@; exit 1; }
 
+
+# -------------------------------------------------------------------------------------------------
+# Show all the repos that are totally clean (no changes, nothing to push.)
+#
 do_clean() {
   pushd . > /dev/null
 
@@ -13,13 +20,46 @@ do_clean() {
   local branch=$(git status | egrep -i 'on branch .*$' | cut -d' ' -f3-)
 
   if [[ $new == 0 && $mod == 0 ]]; then
-    printf -- "------------------------- clean ---- %s %-14s %s\n"  $(hostname)  $branch  $DIR
-    git status | sed -n '/up-to-date/d;/Your branch is/p'
+    git_status_msg="$(git status | sed -n '/up-to-date/d;/Your branch is/p')"
+    git_status_len="$(echo $git_status_msg | wc -c)"
+
+    if [[ $git_status_len == 1 ]]; then
+      printf -- "----------------- clean ------------ %s %-14s %s\n"  $(hostname)  $branch  $DIR
+    fi
   fi
 
   popd > /dev/null
 }
 
+# -------------------------------------------------------------------------------------------------
+# Show all the repos that need to be pushed.
+#
+do_clean_need_push() {
+  pushd . > /dev/null
+
+  DIR="$1"
+
+  cd $DIR
+  local mod=$(git status --short | wc -l)
+  local new=$(git ls-files -o --exclude-standard | wc -l)
+  local branch=$(git status | egrep -i 'on branch .*$' | cut -d' ' -f3-)
+
+  if [[ $new == 0 && $mod == 0 ]]; then
+    git_status_msg="$(git status | sed -n '/up-to-date/d;/Your branch is/p')"
+    git_status_len="$(echo $git_status_msg | wc -c)"
+
+    if [[ $git_status_len != 1 ]]; then
+      printf -- "----------------- need to push ----- %s %-14s %s\n"  $(hostname)  $branch  $DIR
+      echo "$git_status_msg"
+    fi
+  fi
+
+  popd > /dev/null
+}
+
+# -------------------------------------------------------------------------------------------------
+# Show the repos that need to be checked in.
+#
 do_changed() {
   pushd . > /dev/null
 
@@ -38,7 +78,10 @@ do_changed() {
   popd > /dev/null
 }
 
+# Now the script
 
+
+# -------------------------------------------------------------------------------------------------
 # ----- Determine the root dir --------------------------------------------------------------------
 
 target_dir="$1"
@@ -47,7 +90,12 @@ target_dir="$1"
 [[ -d $target_dir ]] || die "$target_dir is not a directory"
 
 # Make sure git is setup
-git config --global --get 'user.email' | egrep 'briancsparks' || git config --global --list
+if ! git config --global --get 'user.email' | egrep 'briancsparks' > /dev/null; then
+  echo "Global git config might be wrong:"
+  echo ""
+  git config --global --list
+  echo ""
+fi
 
 repositories="$(find $target_dir -type d | egrep '\.git$' | egrep -v 'X/\.git$' | egrep -v '/dev/[^/]+X/' | sort)"
 #echo "Repos: $repositories"
@@ -60,6 +108,17 @@ for d in $repositories; do
 
   do_changed $dir
 done
+
+echo ""
+
+# Display clean dirs that need to be pushed
+for d in $repositories; do
+  dir="$(dirname $(dirname $d/..))"
+
+  do_clean_need_push $dir
+done
+
+echo ""
 
 # Display clean dirs
 for d in $repositories; do
