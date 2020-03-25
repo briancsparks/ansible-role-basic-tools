@@ -74,6 +74,7 @@
 
 - name: Include vimcat tasks
   include_tasks: vimcat.yml
+  when: not slim
 
 - name: Include git config
   include_tasks: git.yml
