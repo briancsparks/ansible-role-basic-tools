@@ -8,7 +8,7 @@
 
 - name: Check sudo
   debug:
-    vars: ansible_become
+    var: ansible_become
 
 - name: Install Packages
   apt:
