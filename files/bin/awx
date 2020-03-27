@@ -1,0 +1,17 @@
+#!/bin/bash -e
+
+script_dir="$( cd "$(dirname "$( readlink -f "${BASH_SOURCE[0]}" )" )" && pwd )"
+
+errcho() { echo "$@" 1>&2; }
+die() { errcho "$@"; exit 1; }
+
+SERVICE="$1"
+ACTION="$2"
+
+if [[ $SERVICE == ec2 ]]; then
+  if [[ $ACTION == start ]]; then
+  fi
+fi
+
+aws $@
+
