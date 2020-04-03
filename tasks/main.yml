@@ -50,6 +50,10 @@
     - bashrc
     - profile
 
+# TODO: set HISTCONTROL=ignorespace:ignoredups:erasedups   in ~/.bashrc
+# TODO: set HISTSIZE=10000
+# TODO: set HISTFILESIZE=20000
+
 
 - name: Add our bashrc to the end of .bashrc
   blockinfile:
