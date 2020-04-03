@@ -23,6 +23,8 @@
   file:
     path: "{{ item }}"
     state: directory
+    user: ubuntu
+    group: ubuntu
   with_items:
     - "{{ the_user_dir }}/bin"
 
@@ -30,12 +32,17 @@
   copy:
     src: bin/
     dest: "{{ the_user_dir }}/bin"
+    user: ubuntu
+    group: ubuntu
     mode: 0755
 
 - name: Install ~/.dot helpers
   copy:
     src: home/_{{ item }}
     dest: "{{ the_user_dir }}/.{{ item }}"
+    user: ubuntu
+    group: ubuntu
+    mode: 0644
   with_items:
     - ackrc
     - agignore
@@ -46,6 +53,9 @@
   copy:
     src: homeex/_{{ item }}
     dest: "{{ the_user_dir }}/._{{ item }}"
+    user: ubuntu
+    group: ubuntu
+    mode: 0644
   with_items:
     - bashrc
     - profile
@@ -63,6 +73,9 @@
       if [ -f ~/._bashrc ]; then
         . ~/._bashrc
       fi
+    user: ubuntu
+    group: ubuntu
+    mode: 0644
 
 - name: Add our profile to the end of .profile
   blockinfile:
@@ -72,6 +85,9 @@
       if [ -f ~/._profile ]; then
         . ~/._profile
       fi
+    user: ubuntu
+    group: ubuntu
+    mode: 0644
 
 - name: Include vim tasks
   include_tasks: vim.yml
