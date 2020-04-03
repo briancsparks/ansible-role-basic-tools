@@ -23,7 +23,7 @@
   file:
     path: "{{ item }}"
     state: directory
-    user: ubuntu
+    owner: ubuntu
     group: ubuntu
   with_items:
     - "{{ the_user_dir }}/bin"
@@ -32,7 +32,7 @@
   copy:
     src: bin/
     dest: "{{ the_user_dir }}/bin"
-    user: ubuntu
+    owner: ubuntu
     group: ubuntu
     mode: 0755
 
@@ -40,7 +40,7 @@
   copy:
     src: home/_{{ item }}
     dest: "{{ the_user_dir }}/.{{ item }}"
-    user: ubuntu
+    owner: ubuntu
     group: ubuntu
     mode: 0644
   with_items:
@@ -53,7 +53,7 @@
   copy:
     src: homeex/_{{ item }}
     dest: "{{ the_user_dir }}/._{{ item }}"
-    user: ubuntu
+    owner: ubuntu
     group: ubuntu
     mode: 0644
   with_items:
@@ -73,7 +73,7 @@
       if [ -f ~/._bashrc ]; then
         . ~/._bashrc
       fi
-    user: ubuntu
+    owner: ubuntu
     group: ubuntu
     mode: 0644
 
@@ -85,7 +85,7 @@
       if [ -f ~/._profile ]; then
         . ~/._profile
       fi
-    user: ubuntu
+    owner: ubuntu
     group: ubuntu
     mode: 0644
 
