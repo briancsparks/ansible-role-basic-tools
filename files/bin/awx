@@ -8,10 +8,10 @@ die() { errcho "$@"; exit 1; }
 SERVICE="$1"
 ACTION="$2"
 
-if [[ $SERVICE == ec2 ]]; then
-  if [[ $ACTION == start ]]; then
-  fi
-fi
+#if [[ $SERVICE == ec2 ]]; then
+#  if [[ $ACTION == start ]]; then
+#  fi
+#fi
 
 aws $@
 

@@ -15,6 +15,7 @@ alias sshix='ssh -A -o "StrictHostKeyChecking no" -o UserKnownHostsFile=/dev/nul
 alias tree='tree -I '\''node_modules|bower_components|ppds|_tmp|cmake-build|doxygen-build'\'''
 alias treesm='tree -I '\''node_modules|bower_components|ppds|_tmp|cmake-build|doxygen-build|build'\'''
 alias vim='vim -p'
+alias vcat='vimcat'
 
 alias showpath='echo $PATH | tr ":" "\n"'
 alias showenv='env | sort'

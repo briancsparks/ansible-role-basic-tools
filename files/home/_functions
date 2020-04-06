@@ -4,8 +4,76 @@
 # gitignore.io
 gi() { curl -sL "https://www.gitignore.io/api/$@" ; }
 
-mkdircd() {
+mcd() {
   mkdir -p $@;
   cd $@;
 }
+
+
+# =====================================================================================================================
+# ~/.bcs/dirs has a table of aliases to paths. Lookup $1 in
+# the table and then cd there (jump)
+#
+j() {
+
+  # Get lines that match $1
+  lines="$(egrep ^$1 $HOME/.bcs/dirs)"
+  if [[ -n $lines ]]; then
+    if [[ `egrep ^$1 $HOME/.bcs/dirs | wc -l` == 1 ]]; then       # wc -l == 1, when we found zero lines
+
+      # Get the second part of the line
+      dir="$(echo $lines | cut -d' ' -f2)"
+
+      # cd there, and were done
+      cd $dir
+      return 0
+    fi
+
+    # Found too many matchine lines from ~/bcs/dirs
+    echo "Too many dirs:"
+    egrep ^$1 $HOME/.bcs/dirs
+    return 2
+  fi
+
+  # Cannot figure it out, dump the whole dirs files
+  echo "No dir choose:"
+  echo ""
+  cat $HOME/.bcs/dirs
+
+  return 1
+}
+
+# =====================================================================================================================
+# jj -- lookup pwd:
+#         zero lines match -- not a j dir
+#         show matching lines
+#
+# jj name -- Add "name `pwd`" to the end of dirs file (add jump name)
+# jj edit -- vim the dirs file
+#
+jj() {
+
+  # no args means show pwd's jump name, or report it is not in dirs
+  if [[ $# == 0 ]]; then
+    lines="$(egrep " `pwd`$" $HOME/.bcs/dirs)"
+    if [[ -z $lines ]]; then
+      echo `pwd` "is not a jump dir"
+      return 0
+    fi
+
+    echo `echo $lines | cut -d' ' -f1`
+    return 0
+  fi
+
+  # `jj edit` means to edit the dirs file
+  if [[ $1 == edit ]]; then
+    ${EDITOR} $HOME/.bcs/dirs
+    return 0
+  fi
+
+  # `jj name` means to add name as the jump name for pwd
+  echo "$1 `pwd`" >> $HOME/.bcs/dirs
+}
+
+# vim: ft=bash:
 

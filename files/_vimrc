@@ -59,6 +59,11 @@ autocmd ColorScheme * highlight ErrorWhitespace ctermbg=red guibg=red
 "
 " --------------- key mappings ----------------
 "
+"
+" ColorStepper Keys
+nmap <F6> <Plug>ColorstepPrev
+nmap <F9> <Plug>ColorstepNext
+nmap <S-F9> <Plug>ColorstepReload
 
 " Next / Previous tab
 :map <F7> :tabp<CR>:filetype detect<CR>
