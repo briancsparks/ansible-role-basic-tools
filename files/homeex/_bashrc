@@ -4,5 +4,7 @@
 [ -f .functions ]     && . .functions
 [ -f .bash_aliases ]  && . .bash_aliases
 
+[ -f bin/setprompt ]  && . bin/setprompt
+
 # ----- End   -- additions from setup
 

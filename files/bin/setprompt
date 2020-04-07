@@ -1,0 +1,145 @@
+#!/bin/bash
+
+RESET="\[\017\]"
+NORMAL="\[\033[0m\]"
+BOLD="\[\033[1m\]"
+RED="\[\033[31m\]"
+REDBOLD="\[\033[31;1m\]"
+REDBG="\[\033[41m\]"
+GREEN="\[\033[32m\]"
+GREENBOLD="\[\033[32;1m\]"
+GREENBG="\[\033[42m\]"
+YELLOW="\[\033[33m\]"
+YELLOWBG="\[\033[43m\]"
+BLUE="\[\033[34m\]"
+BLUEBOLD="\[\033[35;1m\]"
+BLUEBG="\[\033[44m\]"
+WHITE="\[\033[37m\]"
+WHITEBOLD="\[\033[37;1m\]"
+WHITEBG="\[\033[47m\]"
+BLACK="\[\033[30m\]"
+BLACKBOLD="\[\033[30;1m\]"
+
+# No such colors:
+#YELLOWBOLD="\[\033[33;1m\]"
+
+DEFAULT="-"
+
+__hr_ps1() {
+  local COLS="$(tput cols)"
+  local WORD="$1"
+  local LINE=''
+
+  if [[ -n "$WORD" ]]; then
+    while (( ${#LINE} < COLS )); do
+      LINE="${LINE}${WORD}"
+    done
+
+    echo "${LINE:0:${COLS}}"
+  fi
+}
+
+__hrs_ps1() {
+  local RES="$?"
+  local WORD
+
+#  if [ $RES != 0 ]; then
+#    echo "${WHITE}${REDBG}"
+#  fi
+
+  for WORD in "${@:-${DEFAULT}}"; do
+    __hr_ps1 "$WORD"
+  done
+
+  return $RES
+}
+
+HRS="if [ \$? = 0 ]; then __hrs_ps1 '-'; else __hrs_ps1 ':( '; fi"
+#HRS="__hrs_ps1 '-'"
+
+
+# What is the git status?
+__gs() {
+  local RES="$?"
+  if git branch 2> /dev/null; then
+    local b=$(git branch | grep '^\*' | grep -o '[^ ]*$')
+    local mod=$(git status --short | wc -l | tr -d ' ')
+    local new=$(git ls-files -o --exclude-standard | wc -l | tr -d ' ')
+
+    if [[ $new > 0 ]]; then
+      b="$b+"
+    fi
+
+    if [[ $mod > 0 ]]; then
+        b="$b*"
+        [[ $mod > 1 ]] && b="$b*"
+        [[ $mod > 2 ]] && b="$b*"
+        [[ $mod > 3 ]] && b="$b*"
+        [[ $mod > 4 ]] && b="$b*"
+        [[ $mod > 5 ]] && b="$b ($mod)"
+    fi
+
+    echo " [$b]"
+  fi
+
+  return $RES
+}
+
+GS="__gs | tail -1"
+
+# Get the proxy
+__gproxy() {
+  echo $http_proxy | sed 's;http://;;g; s/:[0-9]*//g; s:/$::g; s/proxy[^.]*//g; s:hp\.com::g; s:hpicorp\.net::g; s/\.//g'
+}
+
+GPROXY="__gproxy | tail -1"
+
+
+test -f $HOME/mario_env && source $HOME/mario_env
+[[ "$MARIO_STACK_NAME" =~ "pub" ]]  && export PROMPT_WARNING="this-is-a-prod-server-"
+[[ $MARIO_SERVICE == admin ]]       && export PROMPT_WARNING="${NAMESPACE}-admin--------"
+
+SMILEY="${WHITE}:)${NORMAL}"
+FROWNY="${WHITE}${REDBG}:(${NORMAL}"
+SELECT="if [ \$? = 0 ]; then echo \"${SMILEY}\"; else echo \"${FROWNY}\"; fi"
+
+#WARNING="test -n ${PROMPT_WARNING} && echo \"${WHITEBG}${REDBOLD}${PROMPT_WARNING}${NORMAL} \""
+WARNING="test -n ${PROMPT_WARNING} && echo \"${REDBOLD}${PROMPT_WARNING}${NORMAL} \""
+
+# Throw it all together
+if [ "$USER" = "sparksb" ]
+then
+  #PS1="${RESET}${BLUEBOLD}\h:\w${NORMAL} (\$(__gs)) \`${SELECT}\` ${YELLOW}\n\$${NORMAL} "
+  #PS1="${RESET}${BLUE}[\t] ${BLUEBOLD}\h\$(__gs | tail -1):\w${NORMAL} \`${SELECT}\` ${YELLOW}\n\$${NORMAL} "
+  PS1="${RESET}${BLUE}[\t] \`${SELECT}\` ${BLUEBOLD}\h\`${GS}\`[\`${GPROXY}\`]:\w${NORMAL} ${YELLOW}\n\$${NORMAL} "
+  #    ^^ host:dir ^^^^^^^^^^^^^^^^^ ^^ smiley ^^^ ^^ $ ^^^^^^^^^^^^^^^^^
+
+elif [ "$USER" = "scotty" ]
+then
+  PS1="${RESET}${YELLOW}[\t] \`${SELECT}\` ${YELLOW}\h\`${GS}\`:\w${NORMAL}\n\`${WARNING}\`${YELLOW}\$${NORMAL} "
+
+elif [ "$USER" = "ubuntu" ]
+then
+  PS1="${RESET}${YELLOW}[\t] \`${SELECT}\` ${YELLOW}${NAMESPACE}-${YELLOW}\h\`${GS}\`:\w${NORMAL} ${YELLOW}\n\$${NORMAL} "
+fi
+
+
+# Clobber PS1 with this:
+#PS1="\`__hrs_ps1 '-'\`${RESET}${BLUE}[\t] \`${SELECT}\` ${BLUEBOLD}\h\`${GS}\`[\`${GPROXY}\`]:\w${NORMAL} ${YELLOW}\n\`${SELECT}\` \$${NORMAL} "
+
+#PS1="\`${HRS}\`${RESET}${NORMAL}${BLUE}[\t] \`${SELECT}\` ${BLUEBOLD}\h\`${GS}\`[\`${GPROXY}\`]:\w${NORMAL} ${YELLOW}\n\`${SELECT}\` \$${NORMAL} "
+PS1="\`${HRS}\`${RESET}${NORMAL}${BLUE}[\t] \`${SELECT}\` ${BLUEBOLD}\h\`${GS}\`:\w${NORMAL} ${YELLOW}\n\$${NORMAL} "
+
+
+
+#if [[ $MARIO_SERVICE == admin ]]; then
+#  #PS1="${RESET}${YELLOW}[\t]  \`${SELECT}\` ${WHITEBG}${BLUE}${MARIO_COLOR}-${MARIO_STACK}-${MARIO_SERVICE} \h\`${GS}\`:\w${NORMAL}\n\`${WARNING}\`${YELLOW}\$${NORMAL} "
+#  #PS1="${RESET}${YELLOW}[\t]  \`${SELECT}\` ${WHITE}${MARIO_COLOR}-${MARIO_STACK}-${MARIO_SERVICE}${YELLOW} \h\`${GS}\`:\w${NORMAL}\n\`${WARNING}\`${YELLOW}\$${NORMAL} "
+#  PS1="${RESET}${YELLOW}[\t]  \`${SELECT}\` ${WHITE}${MARIO_COLOR}-${MARIO_STACK}-${MARIO_SERVICE}${YELLOW} \h\`${GS}\`:\w${NORMAL}\n\`${WARNING}\`${YELLOW}\$${NORMAL} "
+#elif [[ -n $SERVERASSIST_STACK && -n $SERVERASSIST_COLOR && -n $SERVERASSIST_SERVICE ]]; then
+#  PS1="${RESET}${YELLOW}[\t]  \`${SELECT}\` ${YELLOW}${SERVERASSIST_COLOR}-${SERVERASSIST_STACK}-${SERVERASSIST_SERVICE} \h\`${GS}\`:\w${NORMAL}\n\`${WARNING}\`${YELLOW}\$${NORMAL} "
+#elif [[ -n $MARIO_STACK && -n $MARIO_COLOR && -n $MARIO_SERVICE ]]; then
+#  PS1="${RESET}${YELLOW}[\t]  \`${SELECT}\` ${YELLOW}${MARIO_COLOR}-${MARIO_STACK}-${MARIO_SERVICE} \h\`${GS}\`:\w${NORMAL}\n\`${WARNING}\`${YELLOW}\$${NORMAL} "
+#fi
+
+
