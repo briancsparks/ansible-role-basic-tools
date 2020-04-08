@@ -29,6 +29,12 @@ j() {
       return 0
     fi
 
+    # just `j` is not an error
+    if [[ $# == 0 ]]; then
+      cat $HOME/.bcs/dirs
+      return 0
+    fi
+
     # Found too many matchine lines from ~/bcs/dirs
     echo "Too many dirs:"
     egrep ^$1 $HOME/.bcs/dirs
