@@ -17,6 +17,8 @@
     name:
       - tree
       - git
+      - silversearcher-ag
+      - htop
   become: true
 
 - name: Ensure dirs like ~/bin exist
@@ -35,6 +37,18 @@
     owner: ubuntu
     group: ubuntu
     mode: 0755
+
+- name: aws cli
+  args:
+    executable:     /bin/bash
+    creates:        /usr/local/bin/aws
+  shell: |
+    cd /home/ubuntu
+    mkdir -p zz_packages/awscli && cd $_
+    curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+    unzip awscliv2.zip
+    sudo ./aws/install
+
 
 - name: Install ~/.dot helpers
   copy:
