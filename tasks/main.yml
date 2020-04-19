@@ -19,6 +19,8 @@
       - git
       - silversearcher-ag
       - htop
+      - zip
+      - unzip
   become: true
 
 - name: Ensure dirs like ~/bin exist
