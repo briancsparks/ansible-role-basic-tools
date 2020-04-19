@@ -2,14 +2,6 @@
 # tasks file for basic-tools
 
 
-# ansible_user_dir
-# ansible_user_id
-# ansible_user_shell
-
-- name: Check sudo
-  debug:
-    var: ansible_become
-
 - name: Install Packages
   apt:
     update_cache: true

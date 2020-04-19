@@ -1,7 +1,7 @@
 ---
 # defaults file for basic-tools
 
-slim: false
+slim: true
 
 
 ...
